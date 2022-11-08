@@ -1,31 +1,33 @@
 "use strict";
-import fetch from "node-fetch";
 
-export enum Region {
-  BR =	"br1.api.riotgames.com",
-  EUNE =	"eun1.api.riotgames.com",
-  EUW =	"euw1.api.riotgames.com",
-  JP =	"jp1.api.riotgames.com",
-  KR =	"kr.api.riotgames.com",
-  LATAN =	"la1.api.riotgames.com",
-  LATAS =	"la2.api.riotgames.com",
-  NA =	"na1.api.riotgames.com",
-  OC =	"oc1.api.riotgames.com",
-  TR =	"tr1.api.riotgames.com",
-  RU =	"ru.api.riotgames.com",
-}
+import {SummonerMethods, Route, SummonerResponse, MatchesMethods, MatchList} from "./@types/index.js"
 
 export default class LolApi {
-    apiKey: string;
-   
-    constructor(_apiKey: string) {
-      this.apiKey = _apiKey;
-    }
+  apiKey: string;
+  constructor(_apiKey: string) {
+    this.apiKey = _apiKey;
+  }
 
-    async getSummonerBySummonerName (summonerName: string, region: Region): Promise<unknown>{
-        const res = await fetch(`https://${region}/lol/summoner/v4/summoners/by-name/${summonerName}?api_key=${this.apiKey}`);
-        const body = await res.json();
-        return body 
+  get summoner() {
+    return {
+      getSummonerBySummonerName: (summonerName:string , server: Route): Promise<SummonerResponse> =>
+        SummonerMethods.getSummonerBySummonerName({identifier: summonerName, apiKey: this.apiKey, route: server}),
+      getSummonerBySummonerId: (summonerId:string , server: Route): Promise<SummonerResponse> =>
+        SummonerMethods.getSummonerBySummonerId({identifier: summonerId, apiKey: this.apiKey, route: server}),
+      getSummonerByAccountID: (accountID:string , server: Route): Promise<SummonerResponse> =>
+        SummonerMethods.getSummonerByAccountID({identifier: accountID, apiKey: this.apiKey, route: server}),
+      getSummonerByPuuid: (puuid:string , server: Route): Promise<SummonerResponse> =>
+        SummonerMethods.getSummonerByPuuid({identifier: puuid, apiKey: this.apiKey, route: server}),
     }
+  }
+  get match() {
+    return {
+      getMatchesFromPUUID: (puuid:string , region: Route): Promise<MatchList> =>
+        MatchesMethods.getMatchesFromPUUID(puuid, region, this.apiKey),
+    }
+  }
 
 }
+
+export {Route, SummonerResponse}
+

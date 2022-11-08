@@ -16,12 +16,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/preset-env": "^7.20.2",
     "@types/jest": "^29.2.2",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
+    "babel-jest": "^29.3.0",
     "del-cli": "^5.0.0",
     "eslint": "^8.27.0",
-    "jest": "^29.2.2",
+    "jest": "^29.3.0",
     "prettier": "^2.7.1",
     "ts-jest": "^29.0.3",
     "typescript": "^4.8.4"
@@ -30,5 +32,14 @@
   "dependencies": {
     "node-fetch": "^3.2.10"
   },
-  "type": "module"
+  "type": "module",
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!@atlaskit)",
+      "node_modules/(?!node-fetch)"
+    ],
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
+  }
 }
