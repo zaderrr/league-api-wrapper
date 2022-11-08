@@ -34,6 +34,7 @@ export type MatchListQuery = {
 export type ApiQueryParams = {
   route: Route;
   apiKey: string;
+  endpoint: string;
 }
 
 export interface SummonerQuery extends ApiQueryParams {
@@ -52,20 +53,8 @@ export type SummonerResponse = {
 
 export namespace SummonerMethods {
   let base: string  = "lol/summoner/v4/summoners/";
-  export async function getSummonerBySummonerName (queryParams: SummonerQuery): Promise<SummonerResponse>{
-    base += `by-name/${queryParams.identifier}?api_key=${queryParams.apiKey}`;
-    return Methods.getSummoner(base, queryParams.route)
-  }
-  export async function getSummonerBySummonerId (queryParams: SummonerQuery): Promise<SummonerResponse>{
-    base += `${queryParams.identifier}?api_key=${queryParams.apiKey}`;
-    return Methods.getSummoner(base, queryParams.route)
-  }
-  export async function getSummonerByAccountID (queryParams: SummonerQuery): Promise<SummonerResponse>{
-    base += `by-account/${queryParams.identifier}?api_key=${queryParams.apiKey}`;
-    return Methods.getSummoner(base, queryParams.route)
-  }
-  export async function getSummonerByPuuid (queryParams: SummonerQuery): Promise<SummonerResponse>{
-    base += `by-puuid/${queryParams.identifier}?api_key=${queryParams.apiKey}`;
+  export async function getSummoner (queryParams: SummonerQuery): Promise<SummonerResponse>{
+    base += queryParams.endpoint + `${queryParams.identifier}?api_key=${queryParams.apiKey}`;
     return Methods.getSummoner(base, queryParams.route)
   }
 }
@@ -91,7 +80,7 @@ namespace Methods {
   export async function Request<T>(url: string, route:Route) {
     return fetch(`https://${route}.api.riotgames.com/${url}`).then(response => {
     if (!response.ok) {
-      throw new Error(`https://${route}.api.riotgames.com/${url}`);
+      throw new Error(response.statusText);
     }
     return response.json() as Promise<T>
   })

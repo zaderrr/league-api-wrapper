@@ -11,13 +11,13 @@ export default class LolApi {
   get summoner() {
     return {
       getSummonerBySummonerName: (summonerName:string , server: Route): Promise<SummonerResponse> =>
-        SummonerMethods.getSummonerBySummonerName({identifier: summonerName, apiKey: this.apiKey, route: server}),
+        SummonerMethods.getSummoner({endpoint: 'by-name/',identifier: summonerName, apiKey: this.apiKey, route: server}),
       getSummonerBySummonerId: (summonerId:string , server: Route): Promise<SummonerResponse> =>
-        SummonerMethods.getSummonerBySummonerId({identifier: summonerId, apiKey: this.apiKey, route: server}),
+        SummonerMethods.getSummoner({endpoint: '', identifier: summonerId, apiKey: this.apiKey, route: server}),
       getSummonerByAccountID: (accountID:string , server: Route): Promise<SummonerResponse> =>
-        SummonerMethods.getSummonerByAccountID({identifier: accountID, apiKey: this.apiKey, route: server}),
+        SummonerMethods.getSummoner({endpoint: 'by-account/', identifier: accountID, apiKey: this.apiKey, route: server}),
       getSummonerByPuuid: (puuid:string , server: Route): Promise<SummonerResponse> =>
-        SummonerMethods.getSummonerByPuuid({identifier: puuid, apiKey: this.apiKey, route: server}),
+        SummonerMethods.getSummoner({endpoint: 'by-puuid/', identifier: puuid, apiKey: this.apiKey, route: server}),
     }
   }
   get match() {
