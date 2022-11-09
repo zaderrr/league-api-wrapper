@@ -242,7 +242,7 @@ export namespace SummonerMethods {
   export namespace MatchesMethods {
     export async function getMatchesList(
       queryParams: MatchListQuery
-      ): Promise<MatchList> {
+      ): Promise<string[]> {
         let query: string = "&";
         if (queryParams.count !== undefined){
           query += `&count=${queryParams.count}`
@@ -251,7 +251,7 @@ export namespace SummonerMethods {
           query += `&start=${queryParams.start}`
         }
         const base = `lol/match/v5/matches/${queryParams.endpoint}${queryParams.identifier}/ids?api_key=${queryParams.apiKey}${query}`;
-        return Methods.Request<MatchList>(base, queryParams.route);
+        return Methods.Request<string[]>(base, queryParams.route);
       }
       export async function getMatchFromMatchId(
         queryParams: ApiQueryParams

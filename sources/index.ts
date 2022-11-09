@@ -5,9 +5,7 @@ import {
     Route,
     SummonerResponse,
     MatchesMethods,
-    MatchList,
     Match,
-    MatchListQuery
 } from "./@types/index.js";
 
 export default class LolApi {
@@ -62,14 +60,14 @@ export default class LolApi {
     }
     get match() {
         return {
+            // eslint-disable-next-line max-params
             getMatchesFromPUUID: (
-                {
-                    identifier: puuid,
-                    route: region,
-                    start: start,
-                    count: count
-                }: MatchListQuery
-            ): Promise<MatchList> =>
+                    puuid: string,
+                    region: Route,
+                    start?: number,
+                    count?: number,
+            
+            ): Promise<string[]> =>
                 MatchesMethods.getMatchesList({
                     endpoint: "by-puuid/",
                     identifier: puuid,
